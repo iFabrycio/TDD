@@ -16,6 +16,36 @@ class ProductController extends Controller
             'slug' => str_slug($request->name),
             'price' => $request->price,
         ]);
+
+        // dd($product);
         return response()->json(new ProductResource($product), 201);
+    }
+    public function show (int $id)
+    {
+        $product = Product::findOrFail($id);
+
+        // dd($product);
+        return response()->json(new ProductResource($product));
+    }
+    public function update(Request $request, int $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $product->update([
+            'name' => $request->name,
+            'slug' => str_slug($request->name),
+            'price' => $request->price,
+        ]);
+        return response()->json(new ProductResource($product));
+
+    }
+
+    public function delete(int $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $product->delete();
+
+        return response()->json([], 200);
     }
 }
