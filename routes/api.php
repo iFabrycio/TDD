@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware('auth:api')->namespace('Api')->group(function (){
     
-    Route::resource('/products', 'ProductController', ['except'=>'edit']);
+    Route::resource('/products', 'ProductController', ['except'=>'edit', 'create']);
     // Route::post('/products', 'ProductController@store');
     // Route::get('/products','ProductController@index');
     // Route::get('/products/{id}', 'ProductController@show');

@@ -10,13 +10,13 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function create(string $model, array $attributes = [], $resource)
+    public function create(string $model, array $attributes = [], $resource = true)
     {
         $resourceModel = factory("App\\$model")->create($attributes);
 
         $resourceClass = "App\\Http\Resources\\$model";
 
-        if(!resource)
+        if(!$resource)
             return $resourceModel;
 
         return new $resourceClass($resourceModel);
