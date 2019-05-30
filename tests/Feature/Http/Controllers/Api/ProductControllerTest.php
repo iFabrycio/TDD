@@ -16,6 +16,34 @@ class ProductControllerTest extends TestCase
      *  The second way is just an '@ with a test' here.
      * @test
      */
+
+    public function can_return_a_collection_of_paginated_products()
+    {
+        $product1 = $this->create('Product');
+        $product2 = $this->create('Product');
+        $product3 = $this->create('Product');
+
+        $response = $this->actingAs($this->create('User'))->json('GET', '/api/products');
+
+        $response->assertStatus(200)
+        ->assertJsonStructure([
+            'data'=>[
+                '*'=>[ 'id', 'name', 'slug', 'price', 'created_at',]
+            ],
+            'links'=>[
+                'first', 'last', 'prev', 'next',
+            ],
+            'meta'=> [
+                'current_page', 'last_page', 'from', 'to', 'path',
+                'per_page', 'total',
+            ],
+        ]);
+
+    }
+
+    /**
+      * @test
+      */
     public function can_create_a_product()
     {
         //Given
@@ -28,8 +56,8 @@ class ProductControllerTest extends TestCase
                 'name' => $name = $faker->company,
                 'slug' => str_slug($name),
                 'price' => $price = random_int(10, 100),
-            ]); //This line send a requisition 
-            // \Log::info(1, [$response->getContent()])
+            ]); //This line send a requisition
+            \Log::info(1, [$response->getContent()]);
         //Then
             //Product exists(result)
         $response->assertJsonStructure([
@@ -154,4 +182,6 @@ class ProductControllerTest extends TestCase
             'id' => $product->id,
         ]);
     }
+
+
 }

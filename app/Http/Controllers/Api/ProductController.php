@@ -6,9 +6,14 @@ use App\Product;
 use App\Http\Resources\Product as ProductResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductCollection;
 
 class ProductController extends Controller
 {
+    public function index ()
+    {
+        return new ProductCollection(Product::paginate());
+    }
     public function store (Request $request)
     {
         $product = Product::create([
@@ -40,7 +45,7 @@ class ProductController extends Controller
 
     }
 
-    public function delete(int $id)
+    public function destroy(int $id)
     {
         $product = Product::findOrFail($id);
 
